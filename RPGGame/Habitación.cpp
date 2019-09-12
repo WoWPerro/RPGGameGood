@@ -19,13 +19,15 @@ void Habitación::LeerHabitacion()
 {
 	if (!_read)
 	{
+		int counter = 0;
 		std::cout << "============================================================================" << std::endl;
 		std::cout << _descripcion << std::endl;
 		if (_objetos) {
 			std::list <Objeto*>::iterator objetosit;
 			for (objetosit = _objetos->begin(); objetosit != _objetos->end(); objetosit++)
 			{
-				std::cout << "Ves: " << (*objetosit)->GetName() << std::endl;
+				std::cout << "Ves: " << (*objetosit)->GetName() << " ["<< counter << "]"<< std::endl;
+				counter++;
 			}
 		}
 
@@ -44,11 +46,11 @@ void Habitación::LeerHabitacion()
 		{
 			if (puertasit->GetAbierta())
 			{
-				std::cout << "Puerta [" << puertasit->GetID() << "] abierta" << std::endl;
+				std::cout << "Puerta [Que lleva al cuarto " << puertasit->GetID() << "] abierta" << std::endl;
 			}
 			else if (!puertasit->GetAbierta())
 			{
-				std::cout << "Puerta [" << puertasit->GetID() << "] cerrada" << std::endl;
+				std::cout << "Puerta [Que lleva al cuarto (" << puertasit->GetID() << ")] cerrada" << std::endl;
 			}			
 		}
 

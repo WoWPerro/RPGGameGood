@@ -443,6 +443,42 @@ void DictionarySearch2(string text, multimap <int, string> Diccionario, Player &
 		hero.showInventory();
 	}
 
+	found = key.find(" 8 9 ");
+	if (found != string::npos)
+	{
+		foundTheWord = true;
+		bool foundTheNumber = false;
+		cout << "tomar" << '\n';
+		for (i = StringList.begin(); i != StringList.end(); i++)
+		{
+			if (i->find_first_of("0123456789") == 0)
+			{
+				foundTheNumber = true;
+				//hero.take();
+			}
+		}
+
+		if (!foundTheNumber)
+		{
+			cout << "Por favor especifica un numero Ej. (Equipar 5)" << endl;
+		}
+	}
+
+	found = key.find(" 8 10 ");
+	if (found != string::npos)
+	{
+		foundTheWord = true;
+		bool foundTheNumber = false;
+		cout << "tomar" << '\n';
+		for (i = StringList.begin(); i != StringList.end(); i++)
+		{
+			if (i->find_first_of("0123456789") == 0)
+			{
+				foundTheNumber = true;
+			}
+		}
+	}
+
 
 	if (!foundTheWord)
 	{
@@ -509,9 +545,15 @@ int main()
 	Diccionario.insert(pair <int, string>(7, "inventario"));
 	Diccionario.insert(pair <int, string>(7, "objetos"));
 
-	//curarse	
-
 	//Tomar
+	Diccionario.insert(pair <int, string>(8, "tomar"));
+	Diccionario.insert(pair <int, string>(8, "agarrar"));
+	Diccionario.insert(pair <int, string>(8, "obtener"));
+	Diccionario.insert(pair <int, string>(9, "llave"));
+	Diccionario.insert(pair <int, string>(10, "objeto"));
+	Diccionario.insert(pair <int, string>(10, "espada"));
+	
+	//curarse	
 
 	//Dropear
 
