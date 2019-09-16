@@ -59,6 +59,7 @@ void Enemy::setAlive(bool alive)
 {
 	_alive = alive;
 }
+
 Enemy::~Enemy()
 {
 }

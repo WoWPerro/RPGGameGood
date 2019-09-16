@@ -3,18 +3,19 @@
 #include "Enemy.h"
 #include "Puerta.h"
 #include "Llave.h"
+#include "Weapon.h"
 
 #include <iostream>
 #include <string>
-#include <set>
+#include <vector>
 #include <list>
 #include <forward_list>
 
 using std::string;
 using std::list;
-using std::set;
 using std::forward_list;
 using std::list;
+using std::vector;
 
 class Habitación
 {
@@ -25,14 +26,14 @@ private:
 	string _descripcion;
 
 	std::list <Objeto*>* _objetos;
-	std::set <Llave> _llaves;
+	std::vector <Llave> _llaves;
 	std::forward_list <Puerta> _puertas;
 	std::list <Enemy> _enemigos;
 
 public:
 
 	Habitación();
-	Habitación(int numH, string desc, list<Objeto*>* obj, forward_list<Puerta> pu, list<Enemy> en, set <Llave> Llave) :
+	Habitación(int numH, string desc, list<Objeto*>* obj, forward_list<Puerta> pu, list<Enemy> en, vector <Llave> Llave) :
 	num(numH), _descripcion(desc), _objetos(obj), _puertas(pu), _enemigos(en), _llaves(Llave){};
 	/**
 	Returns the volume of a sphere with the specified radius.
@@ -42,6 +43,7 @@ public:
 	*/
 	void LeerHabitacion();
 	void SetDescription(std::string descripcion);
+	void setRead(bool read);
 	int GetNumH();
 	void Add(Puerta puerta);
 	void Remove(Puerta puerta);
@@ -53,6 +55,9 @@ public:
 	void Remove(Enemy enemy);
 	std::forward_list <Puerta> &Getpuertas();
 	list <Enemy> &GetEnemies();
+	vector <Llave> &GetLlaves();
+	std::list <Objeto*> *GetObjetos();
+	std::list <Weapon*> GetWeapons();
 
 	~Habitación();
 };

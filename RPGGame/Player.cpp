@@ -36,6 +36,16 @@ void Player::take(Objeto * objeto)
 	_objetos.push_back(objeto);
 }
 
+void Player::takeKey(Llave Llave)
+{
+	_llaves.push_back(Llave);
+}
+
+vector <Llave> Player::GetKey()
+{
+	return _llaves;
+}
+
 void Player::takeDamage(int damage)
 {
 	_vida -= damage;
@@ -107,6 +117,19 @@ void Player::showInventory()
 		weaponN++;
 	}
 	cout << "-----------------------------------------------------" << endl;
+}
+
+bool Player::SetCargactual(int carga)
+{
+	_cargaActual += carga;
+	if (_cargaActual > _fuerzaCarga)
+	{
+		return false;
+	}
+	else
+	{
+		return true;
+	}
 }
 
 Player::~Player()

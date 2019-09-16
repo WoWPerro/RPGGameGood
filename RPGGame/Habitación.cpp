@@ -31,7 +31,7 @@ void Habitación::LeerHabitacion()
 			}
 		}
 
-		std::set <Llave>::iterator llavesit;
+		std::vector <Llave>::iterator llavesit;
 		int counterLlaves = 0;
 		for (llavesit = _llaves.begin(); llavesit != _llaves.end(); llavesit++)
 		{
@@ -97,7 +97,7 @@ void Habitación::Remove(Puerta puerta)
 
 void Habitación::Remove(Objeto *obj)
 {
-
+	_objetos->remove(obj);
 }
 
 void Habitación::Remove(Llave llave)
@@ -113,6 +113,40 @@ void Habitación::Remove(Enemy enemy)
 list <Enemy> &Habitación::GetEnemies()
 {
 	return _enemigos;
+}
+
+vector <Llave> &Habitación::GetLlaves()
+{
+	return _llaves;
+}
+
+std::list <Objeto*> *Habitación::GetObjetos()
+{
+	return _objetos;
+}
+
+std::list <Weapon*> Habitación::GetWeapons()
+{
+	list <Objeto*>::iterator Objectsitr;
+	list <Weapon*> weaponlist;
+	list <Weapon*>::iterator weaponlistitr = weaponlist.begin();
+	for (Objeto* objeto : *_objetos)
+	{
+		if (objeto == dynamic_cast<Weapon*>(objeto))
+		{
+			weaponlist.insert(weaponlistitr, dynamic_cast<Weapon*>(objeto));
+			if (weaponlistitr != weaponlist.end())
+			{
+				weaponlistitr++;
+			}
+		}
+	}
+	return weaponlist;
+}
+
+void Habitación::setRead(bool read)
+{
+	_read = read;
 }
 
 Habitación::~Habitación()

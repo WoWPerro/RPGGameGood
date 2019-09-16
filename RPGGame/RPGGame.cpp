@@ -291,7 +291,7 @@ void DictionarySearch2(string text, multimap <int, string> Diccionario, Player &
 
 	string keys; // To store individual words 
 
-	std::size_t found = key.find('1');
+	std::size_t found = key.find(" 1 ");
 	if (found != string::npos)
 	{
 		foundTheWord = true;
@@ -335,13 +335,62 @@ void DictionarySearch2(string text, multimap <int, string> Diccionario, Player &
 		if (!battle)
 		{
 			cout << "Abriendo puerta" << '\n';
-			/*for (i = StringList.begin(); i != StringList.end(); i++)
+			bool foundNumber = false;
+			list<Habitación>::iterator mapa1itr;
+			std::forward_list <Puerta> *puertas = NULL;
+			std::forward_list <Puerta>::iterator puertasitr;
+			std::vector <Llave> _llaves;
+			std::vector <Llave>::iterator llavesitr;
+			bool foundoor = false;
+			bool truekey = false;
+
+			std::vector <std::string>::iterator i = StringList.begin();
+
+			for (i = StringList.begin(); i != StringList.end(); i++)
 			{
 				if (i->find_first_of("0123456789") == 0)
 				{
+					foundNumber = true;
+					for (mapa1itr = mapa1.begin(); mapa1itr != mapa1.end(); mapa1itr++)
+					{
+						if (mapa1itr->GetNumH() == hero.GetCuartoActual())
+						{
+							puertas = &(mapa1itr->Getpuertas());
+						}
+					}
 
+					_llaves = hero.GetKey();
+
+					for (puertasitr = puertas->begin(); puertasitr != puertas->end(); puertasitr++)
+					{
+						if (puertasitr->GetID() == stoi(*i))
+						{
+							foundoor = true;
+							for (llavesitr = _llaves.begin(); llavesitr != _llaves.end(); llavesitr++)
+							{
+								if (puertasitr->GetKey() == llavesitr->GetID())
+								{
+									puertasitr->SetAbierta(true);
+									truekey = true;
+								}
+							}
+							
+						}
+					}
 				}
-			}*/	
+			}
+			if (!foundNumber)
+			{
+				cout << "Por favor especifique un numero de habitacion con numero [ej(1) no(uno)]" << endl;
+			}
+			if (!foundoor && foundNumber)
+			{
+				cout << "No esta la puerta que te lleva al cuarto que especificaste" << endl;
+			}
+			if (foundoor && !truekey)
+			{
+				cout << "No tienes la llave en tu inventario, buscala en el mapa" << endl;
+			}
 		}
 		
 	}
@@ -454,7 +503,42 @@ void DictionarySearch2(string text, multimap <int, string> Diccionario, Player &
 			if (i->find_first_of("0123456789") == 0)
 			{
 				foundTheNumber = true;
-				//hero.take();
+				list<Habitación>::iterator mapa1itr;
+				vector<Llave>::iterator LLaveitr;		
+				vector<Llave> *Llaves = NULL;
+				int counter = 0;
+				bool open = false;
+
+				for (mapa1itr = mapa1.begin(); mapa1itr != mapa1.end(); mapa1itr++)
+				{
+					if (mapa1itr->GetNumH() == hero.GetCuartoActual())
+					{
+						Llaves = &(mapa1itr->GetLlaves());
+					}
+				}
+
+				for (LLaveitr = Llaves->begin(); LLaveitr != Llaves->end(); LLaveitr++)
+				{
+					if (stoi(*i) == counter)
+					{
+						hero.takeKey(*LLaveitr);
+						open = true;
+					}
+					counter++;
+				}
+
+				LLaveitr = Llaves->begin();
+				try 
+				{
+					if (open)
+					{
+						Llaves->erase(LLaveitr);
+					}
+				}				
+				catch (...)
+				{
+
+				}
 			}
 		}
 
@@ -475,6 +559,80 @@ void DictionarySearch2(string text, multimap <int, string> Diccionario, Player &
 			if (i->find_first_of("0123456789") == 0)
 			{
 				foundTheNumber = true;
+			}
+		}
+	}
+
+	found = key.find(" 8 11 ");
+	if (found != string::npos)
+	{
+		foundTheWord = true;
+		bool foundTheNumber = false;
+		cout << "tomar" << '\n';
+		for (i = StringList.begin(); i != StringList.end(); i++)
+		{
+			if (i->find_first_of("0123456789") == 0)
+			{
+				foundTheNumber = true;
+				list<Habitación>::iterator mapa1itr;
+				list<Habitación>::iterator mapa1itr2;
+				list <Weapon*> weaponlist;
+				list <Objeto*> *Objetlist;
+				for (mapa1itr = mapa1.begin(); mapa1itr != mapa1.end(); mapa1itr++)
+				{
+					if (mapa1itr->GetNumH() == hero.GetCuartoActual())
+					{
+						weaponlist = mapa1itr->GetWeapons();	
+						Objetlist = mapa1itr->GetObjetos();
+						mapa1itr2 = mapa1itr;
+					}
+				}				
+				
+				list <Weapon*>::iterator weaponlistitr = weaponlist.begin();
+				int weaponN = 0;
+				for (weaponlistitr = weaponlist.begin(); weaponlistitr != weaponlist.end(); weaponlistitr++)
+				{
+					if (weaponN == stoi(*i))
+					{
+						if (hero.SetCargactual((*weaponlistitr)->GetPeso()))
+						{
+							hero.take(*weaponlistitr);
+							try
+							{
+								mapa1itr2->Remove(*weaponlistitr);
+							}
+							catch(std::exception e)
+							{
+								std::cout << " a standard exception was caught, with message '" << e.what() << "\n";
+							}
+						}
+						
+						else
+						{
+							cout << "Tienes demasiados objetos, tira alguno si quieres obtener este, su peso es [" << (*weaponlistitr)->GetPeso() << "]" << endl;
+						}
+						
+					}
+					weaponN++;
+				}
+
+				
+
+			}
+		}
+	}
+
+	found = key.find(" 12 ");
+	if (found != string::npos)
+	{
+		foundTheWord = true;
+		list<Habitación>::iterator mapa1itr;
+		for (mapa1itr = mapa1.begin(); mapa1itr != mapa1.end(); mapa1itr++)
+		{
+			if (mapa1itr->GetNumH() == hero.GetCuartoActual())
+			{
+				mapa1itr->setRead(false);
+				mapa1itr->LeerHabitacion();
 			}
 		}
 	}
@@ -551,23 +709,25 @@ int main()
 	Diccionario.insert(pair <int, string>(8, "obtener"));
 	Diccionario.insert(pair <int, string>(9, "llave"));
 	Diccionario.insert(pair <int, string>(10, "objeto"));
-	Diccionario.insert(pair <int, string>(10, "espada"));
+	Diccionario.insert(pair <int, string>(11, "espada"));
+	Diccionario.insert(pair <int, string>(11, "arma"));
 	
+	//Mapa
+	Diccionario.insert(pair <int, string>(12, "leer"));
+
 	//curarse	
 
 	//Dropear
 
 	//Hechizo
 
-	//Mostrar
-	//Inventario
 	//Experiencia
+
 	//Vida
+
 	//Stats
-	//Mapa
 
 	//Help
-	Diccionario.insert(pair <int, string>(5, "atacar"));
 
 	//Ver Inventario
 	//---------------------------------------------------------------------------
@@ -626,21 +786,18 @@ int main()
 	-24 hrs, día y noche, dividir las sesiones en tiempo
 	Enemigos:
 	-Sirvientes de APAP (Dios Griego del caos y el desánimo)
-	Programacion
-	Mostrar el Dictionary
 	*/
 
-	//GameMap *mapa1;
-	//mapa1 = new GameMap;
+	//-----------------------------Niveles--------------------------------
 	list<Habitación> mapa1
 	{
 		Habitación
 		(1,
 		string("Holi, vas a morir 1"),
 		new list<Objeto*>{new Weapon(1), new Weapon(1)},
-		forward_list<Puerta>{Puerta(true, 2, 0)},
+		forward_list<Puerta>{Puerta(false, 2, 0)},
 		list<Enemy>{},
-		set<Llave>{}),
+		vector<Llave>{Llave(0)}),
 
 		Habitación
 		(2,
@@ -648,7 +805,7 @@ int main()
 		new list<Objeto*>{new Weapon(1), new Weapon(1)},
 		forward_list<Puerta>{Puerta(true, 1, 0), Puerta(true, 3, 1), Puerta(true, 4, 2)},
 		list<Enemy>{Enemy(1,1), Enemy(1,2)},
-		set<Llave>{}),
+		vector<Llave>{}),
 
 		Habitación
 		(3,
@@ -656,7 +813,7 @@ int main()
 		new list<Objeto*>{new Weapon(1), new Weapon(1)},
 		forward_list<Puerta>{Puerta(true, 2, 1), Puerta(true, 5, 3)},
 		list<Enemy>{Enemy(1,1)},
-		set<Llave>{}),
+		vector<Llave>{}),
 
 		Habitación
 		(4,
@@ -664,7 +821,7 @@ int main()
 		new list<Objeto*>{new Weapon(1), new Weapon(1)},
 		forward_list<Puerta>{Puerta(true, 2, 2), Puerta(true, 6, 2), Puerta(true, 7, 2)},
 		list<Enemy>{Enemy()},
-		set<Llave>{}),
+		vector<Llave>{}),
 
 		Habitación
 		(5,
@@ -672,7 +829,7 @@ int main()
 		new list<Objeto*>{new Weapon(1), new Weapon(1)},
 		forward_list<Puerta>{Puerta(true, 3, 3), Puerta(true, 8, 3)},
 		list<Enemy>{Enemy()},
-		set<Llave>{}),
+		vector<Llave>{}),
 
 		Habitación
 		(6,
@@ -680,7 +837,7 @@ int main()
 		new list<Objeto*>{new Weapon(1), new Weapon(1)},
 		forward_list<Puerta>{Puerta(true, 4, 3), Puerta(true, 9, 3)},
 		list<Enemy>{Enemy()},
-		set<Llave>{}),
+		vector<Llave>{}),
 
 		Habitación
 		(7,
@@ -688,7 +845,7 @@ int main()
 		new list<Objeto*>{new Weapon(1), new Weapon(1)},
 		forward_list<Puerta>{Puerta(true, 4, 3), Puerta(true, 10, 3)},
 		list<Enemy>{Enemy()},
-		set<Llave>{}),
+		vector<Llave>{}),
 
 		Habitación
 		(8,
@@ -696,7 +853,7 @@ int main()
 		new list<Objeto*>{new Weapon(1), new Weapon(1)},
 		forward_list<Puerta>{Puerta(true, 5, 3), Puerta(true, 11, 3), Puerta(true, 12, 3)},
 		list<Enemy>{Enemy()},
-		set<Llave>{}),
+		vector<Llave>{}),
 
 		Habitación
 		(9,
@@ -704,7 +861,7 @@ int main()
 		new list<Objeto*>{new Weapon(1), new Weapon(1)},
 		forward_list<Puerta>{Puerta(true, 6, 3), Puerta(true, 17, 3)},
 		list<Enemy>{Enemy()},
-		set<Llave>{}),
+		vector<Llave>{}),
 
 		Habitación
 		(10,
@@ -712,7 +869,7 @@ int main()
 		new list<Objeto*>{new Weapon(1), new Weapon(1)},
 		forward_list<Puerta>{Puerta(true, 7, 3), Puerta(true, 13, 3)},
 		list<Enemy>{Enemy()},
-		set<Llave>{}),
+		vector<Llave>{}),
 
 		Habitación
 		(11,
@@ -720,7 +877,7 @@ int main()
 		new list<Objeto*>{new Weapon(1), new Weapon(1)},
 		forward_list<Puerta>{Puerta(true, 8, 3)},
 		list<Enemy>{Enemy()},
-		set<Llave>{}),
+		vector<Llave>{}),
 
 		Habitación
 		(12,
@@ -728,7 +885,7 @@ int main()
 		new list<Objeto*>{new Weapon(1), new Weapon(1)},
 		forward_list<Puerta>{Puerta(true, 8, 3)},
 		list<Enemy>{Enemy()},
-		set<Llave>{}),
+		vector<Llave>{}),
 
 		Habitación
 		(13,
@@ -736,7 +893,7 @@ int main()
 		new list<Objeto*>{new Weapon(1), new Weapon(1)},
 		forward_list<Puerta>{Puerta(true, 10, 3), Puerta(true, 14, 3)},
 		list<Enemy>{Enemy()},
-		set<Llave>{}),
+		vector<Llave>{}),
 
 		Habitación
 		(14,
@@ -744,7 +901,7 @@ int main()
 		new list<Objeto*>{new Weapon(1), new Weapon(1)},
 		forward_list<Puerta>{Puerta(true, 13, 3)},
 		list<Enemy>{Enemy()},
-		set<Llave>{}),
+		vector<Llave>{}),
 
 		Habitación
 		(15,
@@ -752,7 +909,7 @@ int main()
 		new list<Objeto*>{new Weapon(1), new Weapon(1)},
 		forward_list<Puerta>{Puerta(true, 14, 3), Puerta(true, 16, 3)},
 		list<Enemy>{Enemy()},
-		set<Llave>{}),
+		vector<Llave>{}),
 
 		Habitación
 		(16,
@@ -760,7 +917,7 @@ int main()
 		new list<Objeto*>{ new Weapon(1), new Weapon(1) },
 		forward_list<Puerta>{Puerta(true, 15, 3), Puerta(true, 17, 3)},
 		list<Enemy>{Enemy()},
-		set<Llave>{}),
+		vector<Llave>{}),
 
 		Habitación
 		(17,
@@ -768,7 +925,7 @@ int main()
 		new list<Objeto*>{ new Weapon(1), new Weapon(1) },
 		forward_list<Puerta>{Puerta(true, 9, 3), Puerta(true, 16, 3)},
 		list<Enemy>{Enemy()},
-		set<Llave>{}),
+		vector<Llave>{}),
 
 		Habitación
 		(18,
@@ -776,7 +933,7 @@ int main()
 		new list<Objeto*>{ new Weapon(1), new Weapon(1) },
 		forward_list<Puerta>{Puerta(true, 9, 3), Puerta(true, 16, 3)},
 		list<Enemy>{Enemy()},
-		set<Llave>{}),
+		vector<Llave>{}),
 
 		Habitación
 		(19,
@@ -784,7 +941,7 @@ int main()
 		new list<Objeto*>{ new Weapon(1), new Weapon(1) },
 		forward_list<Puerta>{Puerta(true, 9, 3), Puerta(true, 16, 3)},
 		list<Enemy>{Enemy()},
-		set<Llave>{}),
+		vector<Llave>{}),
 
 		Habitación
 		(20,
@@ -792,7 +949,7 @@ int main()
 		new list<Objeto*>{ new Weapon(1), new Weapon(1) },
 		forward_list<Puerta>{Puerta(true, 9, 3), Puerta(true, 16, 3)},
 		list<Enemy>{Enemy()},
-		set<Llave>{}),
+		vector<Llave>{}),
 
 		Habitación
 		(21,
@@ -800,7 +957,7 @@ int main()
 		new list<Objeto*>{ new Weapon(1), new Weapon(1) },
 		forward_list<Puerta>{Puerta(true, 9, 3), Puerta(true, 16, 3)},
 		list<Enemy>{Enemy()},
-		set<Llave>{}),
+		vector<Llave>{}),
 
 		Habitación
 		(22,
@@ -808,7 +965,7 @@ int main()
 		new list<Objeto*>{ new Weapon(1), new Weapon(1) },
 		forward_list<Puerta>{Puerta(true, 9, 3), Puerta(true, 16, 3)},
 		list<Enemy>{Enemy()},
-		set<Llave>{}),
+		vector<Llave>{}),
 
 		Habitación
 		(23,
@@ -816,23 +973,8 @@ int main()
 		new list<Objeto*>{ new Weapon(1), new Weapon(1) },
 		forward_list<Puerta>{Puerta(true, 9, 3), Puerta(true, 16, 3)},
 		list<Enemy>{Enemy()},
-		set<Llave>{}),
+		vector<Llave>{}),
 	};
-	//-----------------------------Niveles--------------------------------
-
-	//Habitación R1;
-	//R1.SetDescription("Prueba");
-	//Puerta P1(true);
-	//R1.Add(P1);
-	//Khopesh *khopesh1 = new Khopesh();
-	//R1.Add(khopesh1);
-	//mapa1->Add(R1);
-
-	//Habitación R2;
-	//R2.SetDescription("Prueba 2");
-	//Puerta P2(true);
-	//R2.Add(P2);
-	//mapa1->Add(R2);
 
 	//-----------------------------Player----------------------------------
 	Player hero("name");
@@ -909,9 +1051,6 @@ int main()
 				cout << "El " << enemigosActualesitr->GetName() << "(Enemigo [" << enemigosActualesitr->Getid() << "], HP[" << enemigosActualesitr->GetVida() << "])" << " te ataco" << endl;
 				cout << "Vida actual [" << hero.getVida() << "]" << endl;
 			}
-
-
-
 
 			combat = CheckEnemy(mapa1, hero.GetCuartoActual());
 		}

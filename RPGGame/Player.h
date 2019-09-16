@@ -1,6 +1,6 @@
 #pragma once
 #include <list>
-#include <set>
+#include <vector>
 #include "Objeto.h"
 #include "Llave.h"
 #include "Habitación.h"
@@ -14,10 +14,11 @@ public:
 	Player();
 	Player(std::string name);
 
+private:
 	std::string _name;
 	int _cuartoActual = 1;
 	std::list <Objeto *> _objetos;
-	std::set <Llave> _llaves;
+	std::vector <Llave> _llaves;
 	int _fuerzaCarga = 100;
 	int _cargaActual = 0;
 	float _fuerza = 1;
@@ -29,17 +30,21 @@ public:
 	int _maxVida = 100;
 	Weapon _currentweapon;
 
+public:
 	void move(int cuarto);
 	void SetCuartoActual(int cuarto);
 	int GetCuartoActual();
 	void drop(Objeto *);
 	void take(Objeto *);
+	void takeKey(Llave Llave);
+	vector <Llave> GetKey();
 	void takeDamage(int damage);
 	int makeDamage();
 	int getVida();
 	void setVida(int vida);
 	void SetWeapon(Weapon &weapon);
 	void showInventory();
+	bool SetCargactual(int carga);
 	list <Objeto*> GetObjects();
 	
 	~Player();
